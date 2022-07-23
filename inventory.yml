@@ -1,0 +1,10 @@
+all:
+  children:
+    webservers:
+      hosts:
+        web1:
+          ansible_host: 51.250.88.52
+          ansible_user: deploy
+        web2:
+          ansible_host: 51.250.74.210
+          ansible_user: deploy
