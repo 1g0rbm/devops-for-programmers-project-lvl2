@@ -3,3 +3,4 @@ collections:
 
 roles:
   - name: geerlingguy.pip
+  - name: datadog.datadog
