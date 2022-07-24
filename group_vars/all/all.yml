@@ -1,0 +1,4 @@
+app_port: "80"
+
+pip_install_packages:
+  - name: docker

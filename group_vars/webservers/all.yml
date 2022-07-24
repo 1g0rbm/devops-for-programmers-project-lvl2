@@ -1,8 +1,3 @@
-app_port: "80"
-
-pip_install_packages:
-  - name: docker
-
 redmine_db_postgres: rc1b-rdsm119xaoy0vyye.mdb.yandexcloud.net
 redmine_db_port: 6432
 redmine_db_database: "{{ vault_redmine_db_database }}"

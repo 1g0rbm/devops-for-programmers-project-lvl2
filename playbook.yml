@@ -47,4 +47,5 @@
 - name: Setting up datadog agent
   hosts: webservers
   roles:
-    - { role: datadog.datadog, become: true }
+    - role: datadog.datadog
+      become: true
