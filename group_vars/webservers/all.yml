@@ -1,0 +1,23 @@
+app_port: "80"
+
+pip_install_packages:
+  - name: docker
+
+redmine_db_postgres: rc1b-rdsm119xaoy0vyye.mdb.yandexcloud.net
+redmine_db_port: 6432
+redmine_db_database: "{{ vault_redmine_db_database }}"
+redmine_db_username: "{{ vault_redmine_db_username }}"
+redmine_db_password: "{{ vault_redmine_db_password }}"
+
+
+datadog_site: "datadoghq.eu"
+datadog_checks:
+  http_check:
+    init_config:
+    instances:
+      - name: hexlet-devops-project-2-status
+        url: http://localhost:80
+        timeout: 5
+        method: GET
+
+datadog_api_key: "{{ vault_datadog_api_key }}"

@@ -1,5 +1,50 @@
 ---
-- hosts: all
+- name: Setting up
+  hosts: all
   gather_facts: true
   roles:
     - { role: geerlingguy.pip, become: true }
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: true
+
+    - name: Create dir for postgres cert
+      file:
+        path: ~/.postgresql
+        state: directory
+    
+    - name: Download postgres cert
+      command: bash -c 'wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" -O ~/.postgresql/root.crt'
+
+    - name: Chmod postgres root.cert
+      file:
+        path: ~/.postgresql/root.crt
+        state: touch
+        mode: 0660
+
+- name: Deploy webservers
+  hosts: all
+  tasks:
+    - name: Run redmine container
+      community.docker.docker_container:
+        name: redmine
+        image: redmine
+        published_ports: "{{ app_port }}:3000"
+        restart_policy: always
+        restart: yes
+        container_default_behavior: no_defaults
+        pull: yes
+        state: started
+        env:
+          REDMINE_DB_DATABASE: "{{ redmine_db_database }}"
+          REDMINE_DB_POSTGRES: "{{ redmine_db_postgres }}"
+          REDMINE_DB_USERNAME: "{{ redmine_db_username }}"
+          REDMINE_DB_PASSWORD: "{{ redmine_db_password }}"
+          REDMINE_DB_PORT: "{{ redmine_db_port | int }}"
+
+- name: Setting up datadog agent
+  hosts: all
+  roles:
+    - { role: datadog.datadog, become: true }
