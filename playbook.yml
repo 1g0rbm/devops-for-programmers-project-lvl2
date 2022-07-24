@@ -45,6 +45,6 @@
           REDMINE_DB_PORT: "{{ redmine_db_port | int }}"
 
 - name: Setting up datadog agent
-  hosts: all
+  hosts: webservers
   roles:
     - { role: datadog.datadog, become: true }
