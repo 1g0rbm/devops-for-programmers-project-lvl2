@@ -1,4 +1,4 @@
-prepare-environment: prepare-vault-password install
+prepare-local-environment: prepare-vault-password install
 
 prepare-vault-password:
 	touch vault-password
