@@ -11,7 +11,7 @@
       become: true
 
     - name: Check that the somefile.conf exists
-      stat:
+      ansible.builtin.stat:
         path: ~/.postgresql/root.crt
       register: postgres_cert
 
@@ -23,12 +23,6 @@
     - name: Download postgres cert
       ansible.builtin.command: bash -c 'wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" -O ~/.postgresql/root.crt'
       when: not postgres_cert.stat.exists
-
-    - name: Chmod postgres root.cert
-      ansible.builtin.file:
-        path: ~/.postgresql/root.crt
-        state: touch
-        mode: 0644
 
 - name: Deploy webservers
   hosts: all
