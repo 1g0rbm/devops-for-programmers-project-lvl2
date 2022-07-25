@@ -6,23 +6,23 @@
     - { role: geerlingguy.pip, become: true }
   tasks:
     - name: Update apt cache
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
       become: true
 
     - name: Create dir for postgres cert
-      file:
+      ansible.builtin.apt.file:
         path: ~/.postgresql
         state: directory
     
     - name: Download postgres cert
-      command: bash -c 'wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" -O ~/.postgresql/root.crt'
+      ansible.builtin.apt.command: bash -c 'wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" -O ~/.postgresql/root.crt'
 
     - name: Chmod postgres root.cert
-      file:
+      ansible.builtin.apt.file:
         path: ~/.postgresql/root.crt
         state: touch
-        mode: 0660
+        mode: 0600
 
 - name: Deploy webservers
   hosts: all
@@ -33,9 +33,9 @@
         image: redmine
         published_ports: "{{ app_port }}:3000"
         restart_policy: always
-        restart: yes
+        restart: true
         container_default_behavior: no_defaults
-        pull: yes
+        pull: true
         state: started
         env:
           REDMINE_DB_DATABASE: "{{ redmine_db_database }}"
