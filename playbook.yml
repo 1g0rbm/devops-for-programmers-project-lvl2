@@ -11,15 +11,15 @@
       become: true
 
     - name: Create dir for postgres cert
-      ansible.builtin.apt.file:
+      ansible.builtin.file:
         path: ~/.postgresql
         state: directory
     
     - name: Download postgres cert
-      ansible.builtin.apt.command: bash -c 'wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" -O ~/.postgresql/root.crt'
+      ansible.builtin.command: bash -c 'wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" -O ~/.postgresql/root.crt'
 
     - name: Chmod postgres root.cert
-      ansible.builtin.apt.file:
+      ansible.builtin.file:
         path: ~/.postgresql/root.crt
         state: touch
         mode: 0600
