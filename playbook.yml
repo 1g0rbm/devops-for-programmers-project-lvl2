@@ -27,6 +27,11 @@
 - name: Deploy webservers
   hosts: all
   tasks:
+    - name: Prepare .env file
+      ansible.builtin.template:
+        src: templates/.env.j2
+        dest: ~/.env
+
     - name: Run redmine container
       community.docker.docker_container:
         name: redmine
@@ -37,12 +42,7 @@
         container_default_behavior: no_defaults
         pull: true
         state: started
-        env:
-          REDMINE_DB_DATABASE: "{{ redmine_db_database }}"
-          REDMINE_DB_POSTGRES: "{{ redmine_db_postgres }}"
-          REDMINE_DB_USERNAME: "{{ redmine_db_username }}"
-          REDMINE_DB_PASSWORD: "{{ redmine_db_password }}"
-          REDMINE_DB_PORT: "{{ redmine_db_port | int }}"
+        env_file: ~/.env
 
 - name: Setting up datadog agent
   hosts: webservers
